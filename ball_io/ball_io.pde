@@ -1,4 +1,4 @@
-String VERSION = "v1.2";
+String VERSION = "v1.3";
 
 //General
 int widthX;
@@ -21,7 +21,6 @@ int screen = 1;
 void setup()
 {   
   size(1430, 690);
-  surface.setResizable(true);
   frameRate(60);
   widthX = width;
   heightY = height;
