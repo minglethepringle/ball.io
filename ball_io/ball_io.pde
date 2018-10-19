@@ -1,4 +1,4 @@
-String VERSION = "v1.1";
+String VERSION = "v1.2";
 
 //General
 int widthX;
@@ -20,8 +20,8 @@ int screen = 1;
 
 void setup()
 {   
-  fullScreen();
-  //size(960, 465);
+  size(1430, 690);
+  surface.setResizable(true);
   frameRate(60);
   widthX = width;
   heightY = height;
@@ -54,8 +54,6 @@ void draw()
     textSize(300);
     textAlign(CENTER, CENTER);
     text("ball.io", width/2, height/2 - 100);
-    fill(green);
-    text("o", 1075, 350);
 
     fill(red);
     textSize(100);
@@ -136,7 +134,7 @@ void draw()
       }
 
       if (frames % 300 == 0) {
-        boxArray.add( new Box((int) random(10, 20), (int) random(0, widthX - boxDim), (int) random(0, heightY - boxDim)) );
+        boxArray.add( new Box((int) random(8, 16), (int) random(0, widthX - boxDim), (int) random(0, heightY - boxDim)) );
       }
 
       if (frames % 60 == 0) {
@@ -162,8 +160,6 @@ void gameOver() {
   textAlign(CENTER, CENTER);
   text("Game Over!", width/2, height/2);
   text("Press R to restart.", width/2, height/2 + 50);
-  textSize(20);
-  text("Press Q to quit.", width/2, height/2 + 100);
   campingSec = 0;
   started = false;
 }
@@ -178,10 +174,7 @@ void keyReleased() {
     screen = 2;
     started = true;
   } else {
-    if (key == 'q') {
-      exit();
-    }
-    if (started == false && key == 'r') {
+    if (started == false && str(key).equals("r")) {
       score = 0;
       boxArray.add( new Box((int) random(10, 20), (int) random(0, widthX - boxDim), (int) random(0, heightY - boxDim)) );
       started = true;
