@@ -1,11 +1,20 @@
+String VERSION = "v1.1";
+
+//General
 int widthX;
 int heightY;
 boolean started = false, collided = false;
+
+//Box
+int boxDim = 50;
 ArrayList<Box> boxArray = new ArrayList<Box>();
 
+//Ball
+int ballDim = 30;
+
+//Counters
 float frames = 0;
 int score = 0;
-int boxDim = 50;
 int campingSec = 0;
 int screen = 1;
 
@@ -31,14 +40,14 @@ void draw()
   fill(white);
   textAlign(RIGHT, TOP);
   text("© Mingle Li, Zach Marto", width - 20, 20);
-  text("v1.0", width - 20, 5);
+  text(VERSION, width - 20, 5);
 
   switch(screen) {
   case 1: //home
 
     //circle
     fill(green);
-    ellipse(mouseX, mouseY, 30, 30);
+    ellipse(mouseX, mouseY, ballDim, ballDim);
 
     //home text
     fill(red);
@@ -65,7 +74,7 @@ void draw()
 
     //circle
     fill(green);
-    ellipse(mouseX, mouseY, 30, 30);
+    ellipse(mouseX, mouseY, ballDim, ballDim);
 
     //score
     fill(red);
