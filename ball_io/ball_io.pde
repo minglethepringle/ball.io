@@ -1,4 +1,4 @@
-String VERSION = "v1.3";
+String VERSION = "v1.4";
 
 //General
 int widthX;
@@ -11,6 +11,7 @@ ArrayList<Box> boxArray = new ArrayList<Box>();
 
 //Ball
 int ballDim = 30;
+int safeRadius = 100;
 
 //Counters
 float frames = 0;
@@ -85,7 +86,6 @@ void draw()
     }
 
     if (started) {
-
       for (Box box : boxArray) {
 
         if (checkCollision(box)) {
@@ -133,7 +133,7 @@ void draw()
       }
 
       if (frames % 300 == 0) {
-        boxArray.add( new Box((int) random(8, 16), (int) random(0, widthX - boxDim), (int) random(0, heightY - boxDim)) );
+        spawnBox();
       }
 
       if (frames % 60 == 0) {
@@ -150,6 +150,25 @@ void draw()
 
     break;
   }
+}
+
+boolean spawnBox() {
+  boolean spawnOk = false;
+  do {
+    int x = (int) random(0, widthX - boxDim);
+    int y = (int) random(0, heightY - boxDim);
+
+    if (  (x < mouseX - safeRadius && x + boxDim < mouseX - safeRadius) || // if box is left of safe zone and doesn't extend into safe zone OR
+      (x > mouseX + safeRadius) || // if box is right of safe zone OR
+      (y < mouseY - safeRadius && y + boxDim < mouseY - safeRadius) || // if box is above safe zone and doesn't extend into safe zone OR
+      (y > mouseY + safeRadius) // if box is below safe zone
+      ) {
+      boxArray.add( new Box((int) random(8, 16), x, y) );
+      spawnOk = true;
+    }
+  } while (spawnOk == false);
+
+  return true;
 }
 
 void gameOver() {
