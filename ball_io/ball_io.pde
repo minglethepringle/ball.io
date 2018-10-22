@@ -1,4 +1,4 @@
-String VERSION = "v1.4";
+String VERSION = "v1.5";
 
 //General
 int widthX;
@@ -16,6 +16,8 @@ int safeRadius = 100;
 //Counters
 float frames = 0;
 int score = 0;
+int highScore = 0;
+boolean highScoreSaved = false;
 int campingSec = 0;
 int screen = 1;
 
@@ -25,6 +27,7 @@ void setup()
   frameRate(60);
   widthX = width;
   heightY = height;
+  highScore = int(loadStrings("highScore.txt")[0]);
 }
 
 void draw()
@@ -179,7 +182,17 @@ void gameOver() {
   text("Game Over!", width/2, height/2);
   text("Press R to restart.", width/2, height/2 + 50);
   campingSec = 0;
+  frames = 0;
   started = false;
+
+  if (score > highScore) {
+    text("New high score!", width/2, height/2 + 120);
+
+    if (!highScoreSaved) {
+      saveStrings("highScore.txt", str(score).split(" "));
+      highScoreSaved = true;
+    }
+  }
 }
 
 void mouseMoved() {
