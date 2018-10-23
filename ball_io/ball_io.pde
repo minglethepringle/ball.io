@@ -14,7 +14,7 @@ int ballDim = 30;
 int safeRadius = 150;
 
 //Counters
-int frameRate = 60;
+int fR = 60;
 float frames = 0;
 int score = 0;
 int highScore = 0;
@@ -25,7 +25,7 @@ int screen = 1;
 void setup()
 {   
   size(1430, 690);
-  frameRate(frameRate);
+  frameRate(fR);
   widthX = width;
   heightY = height;
   syncHighScore();
@@ -137,11 +137,11 @@ void draw()
         }
       }
 
-      if (frames % (frameRate * 5) == 0) {
+      if (frames % (fR * 5) == 0) {
         spawnBox();
       }
 
-      if (frames % frameRate == 0) {
+      if (frames % fR == 0) {
         score++;
         campingSec++;
       }
@@ -168,7 +168,7 @@ void spawnBox() {
       (y < mouseY - safeRadius && y + boxDim < mouseY - safeRadius) || // if box is above safe zone and doesn't extend into safe zone OR
       (y > mouseY + safeRadius) // if box is below safe zone
       ) {
-      double factor = 2 * frameRate / 60.0;
+      double factor = 2 * fR / 60.0;
       boxArray.add( new Box((int) random((int) (8 - factor), (int) (16 - factor)), x, y) );
       spawnOk = true;
     }
