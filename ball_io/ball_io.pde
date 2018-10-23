@@ -1,4 +1,4 @@
-String VERSION = "v1.5";
+String VERSION = "v1.6";
 
 //General
 int widthX;
@@ -11,9 +11,10 @@ ArrayList<Box> boxArray = new ArrayList<Box>();
 
 //Ball
 int ballDim = 30;
-int safeRadius = 100;
+int safeRadius = 150;
 
 //Counters
+int frameRate = 60;
 float frames = 0;
 int score = 0;
 int highScore = 0;
@@ -24,10 +25,10 @@ int screen = 1;
 void setup()
 {   
   size(1430, 690);
-  frameRate(60);
+  frameRate(frameRate);
   widthX = width;
   heightY = height;
-  highScore = int(loadStrings("highScore.txt")[0]);
+  syncHighScore();
 }
 
 void draw()
@@ -82,6 +83,7 @@ void draw()
     textSize(30);
     textAlign(LEFT, TOP);
     text("Score: " + score, 20, 20);
+    text("High Score: " + highScore, 20, 60);
     fill(red);
 
     if (campingSec >= 5) {
@@ -135,11 +137,11 @@ void draw()
         }
       }
 
-      if (frames % 300 == 0) {
+      if (frames % (frameRate * 5) == 0) {
         spawnBox();
       }
 
-      if (frames % 60 == 0) {
+      if (frames % frameRate == 0) {
         score++;
         campingSec++;
       }
@@ -155,7 +157,7 @@ void draw()
   }
 }
 
-boolean spawnBox() {
+void spawnBox() {
   boolean spawnOk = false;
   do {
     int x = (int) random(0, widthX - boxDim);
@@ -166,12 +168,11 @@ boolean spawnBox() {
       (y < mouseY - safeRadius && y + boxDim < mouseY - safeRadius) || // if box is above safe zone and doesn't extend into safe zone OR
       (y > mouseY + safeRadius) // if box is below safe zone
       ) {
-      boxArray.add( new Box((int) random(8, 16), x, y) );
+      double factor = 2 * frameRate / 60.0;
+      boxArray.add( new Box((int) random((int) (8 - factor), (int) (16 - factor)), x, y) );
       spawnOk = true;
     }
   } while (spawnOk == false);
-
-  return true;
 }
 
 void gameOver() {
@@ -207,7 +208,10 @@ void keyReleased() {
   } else {
     if (started == false && str(key).equals("r")) {
       score = 0;
-      boxArray.add( new Box((int) random(10, 20), (int) random(0, widthX - boxDim), (int) random(0, heightY - boxDim)) );
+
+      syncHighScore();
+      highScoreSaved = false;
+
       started = true;
     }
   }
@@ -223,6 +227,10 @@ boolean checkCollision(Box box) {
     collided = true;
   }
   return collided;
+}
+
+void syncHighScore() {
+  highScore = int(loadStrings("highScore.txt")[0]);
 }
 
 class Box {
