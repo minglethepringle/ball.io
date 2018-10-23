@@ -1,4 +1,4 @@
-String VERSION = "v1.6";
+String VERSION = "v1.7";
 
 //General
 int widthX;
@@ -21,6 +21,15 @@ int highScore = 0;
 boolean highScoreSaved = false;
 int campingSec = 0;
 int screen = 1;
+
+// JS Binding
+JavaScript javascript;
+interface JavaScript {
+  void postHighScore(int hs);
+}
+void bindJavascript(JavaScript js) {
+  javascript = js;
+}
 
 void setup()
 {   
@@ -190,7 +199,9 @@ void gameOver() {
     text("New high score!", width/2, height/2 + 120);
 
     if (!highScoreSaved) {
-      saveStrings("highScore.txt", str(score).split(" "));
+      if (javascript != null) {
+        javascript.postHighScore(score);
+      }
       highScoreSaved = true;
     }
   }
