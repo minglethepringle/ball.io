@@ -1,17 +1,23 @@
-String VERSION = "v1.7";
+String VERSION = "v1.8";
 
 //General
 int widthX;
 int heightY;
 boolean started = false, collided = false;
 
+//Colors
+color green = color(0, 255, 0);
+color red = color(255, 0, 0);
+color white = color(200, 200, 200);
+
 //Box
 int boxDim = 50;
 ArrayList<Box> boxArray = new ArrayList<Box>();
+int nextX = 0, nextY = 0;
 
 //Ball
 int ballDim = 30;
-int safeRadius = 150;
+//int safeRadius = 150;
 
 //Counters
 int fR = 60;
@@ -43,10 +49,6 @@ void setup()
 void draw()
 {  
   background(0, 0, 0);
-  //colors
-  color green = color(0, 255, 0);
-  color red = color(255, 0, 0);
-  color white = color(255, 255, 255);
 
   //copyright + version
   textSize(15);
@@ -146,6 +148,10 @@ void draw()
         }
       }
 
+      if (frames % (fR * 5) >= 180 && frames % (fR * 5) <= 300) {
+        drawBoxHint();
+      }
+
       if (frames % (fR * 5) == 0) {
         spawnBox();
       }
@@ -166,21 +172,33 @@ void draw()
   }
 }
 
+void drawBoxHint() {
+  fill(white);
+  if (nextX == 0 && nextY == 0) {
+    generateNextXY();
+  }
+  rect(nextX, nextY, boxDim, boxDim);
+}
+
+void generateNextXY() {
+  nextX = (int) random(0, widthX - boxDim);
+  nextY = (int) random(0, heightY - boxDim);
+}
+
 void spawnBox() {
   boolean spawnOk = false;
   do {
-    int x = (int) random(0, widthX - boxDim);
-    int y = (int) random(0, heightY - boxDim);
-
-    if (  (x < mouseX - safeRadius && x + boxDim < mouseX - safeRadius) || // if box is left of safe zone and doesn't extend into safe zone OR
-      (x > mouseX + safeRadius) || // if box is right of safe zone OR
-      (y < mouseY - safeRadius && y + boxDim < mouseY - safeRadius) || // if box is above safe zone and doesn't extend into safe zone OR
-      (y > mouseY + safeRadius) // if box is below safe zone
-      ) {
-      double factor = 2 * fR / 60.0;
-      boxArray.add( new Box((int) random((int) (8 - factor), (int) (16 - factor)), x, y) );
-      spawnOk = true;
+    if (nextX == 0 && nextY == 0) {
+      generateNextXY();
     }
+    int x = nextX;
+    int y = nextY;
+    double factor = 2 * fR / 60.0;
+    boxArray.add( new Box((int) random((int) (8 - factor), (int) (16 - factor)), x, y) );
+    spawnOk = true;
+
+    nextX = 0;
+    nextY = 0;
   } while (spawnOk == false);
 }
 
@@ -190,7 +208,7 @@ void gameOver() {
   textSize(50);
   textAlign(CENTER, CENTER);
   text("Game Over!", width/2, height/2);
-  text("Press R to restart.", width/2, height/2 + 50);
+  text("Press Space to restart.", width/2, height/2 + 50);
   campingSec = 0;
   frames = 0;
   started = false;
@@ -217,7 +235,7 @@ void keyReleased() {
     screen = 2;
     started = true;
   } else {
-    if (started == false && str(key).equals("r")) {
+    if (started == false && keyCode == 32) {
       score = 0;
 
       syncHighScore();
