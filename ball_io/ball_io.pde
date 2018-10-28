@@ -1,4 +1,4 @@
-String VERSION = "v1.8";
+String VERSION = "v1.9";
 
 //General
 int widthX;
@@ -95,6 +95,9 @@ void draw()
     textAlign(LEFT, TOP);
     text("Score: " + score, 20, 20);
     text("High Score: " + highScore, 20, 60);
+    textSize(15);
+    text("IF ANYONE DOES NOT HAVE 55 AS HIGH SCORE PLEASE CONTACT ME", 20, 100);
+    textSize(30);
     fill(red);
 
     if (campingSec >= 5) {
@@ -262,15 +265,27 @@ void syncHighScore() {
   highScore = int(loadStrings("highScore.txt")[0]);
 }
 
+String chooseRandomXDir() {
+  int xDir = int(random(0, 1.9));
+  return (xDir == 0) ? "left" : "right";
+}
+
+String chooseRandomYDir() {
+  int yDir = int(random(0, 1.9));
+  return (yDir == 0) ? "up" : "down";
+}
+
 class Box {
-  String directionX = "right";
-  String directionY = "down";
+  String directionX;
+  String directionY;
   int speed, x, y;
 
   Box(int speed, int x, int y) {
     this.x = x;
     this.speed = speed;
     this.y = y;
+    this.directionX = chooseRandomXDir();
+    this.directionY = chooseRandomYDir();
   }
 
   void drawBox() {
