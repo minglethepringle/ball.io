@@ -1,4 +1,4 @@
-String VERSION = "v1.9";
+String VERSION = "v1.10";
 
 //General
 int widthX;
@@ -96,7 +96,7 @@ void draw()
     text("Score: " + score, 20, 20);
     text("High Score: " + highScore, 20, 60);
     textSize(15);
-    text("IF ANYONE DOES NOT HAVE 55 AS HIGH SCORE PLEASE CONTACT ME", 20, 100);
+    text("IF ANYONE DOES NOT HAVE 60 AS HIGH SCORE PLEASE CONTACT ME", 20, 100);
     textSize(30);
     fill(red);
 
