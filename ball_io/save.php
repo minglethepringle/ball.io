@@ -1,7 +1,8 @@
 <?php
-
     $hs=(string)$_POST['score'];
     $file = 'highScore.txt';
-    file_put_contents($file, $hs);
-
+    $currentHS = file($file)[0];
+    if(intval($hs) > intval($currentHS)) {
+        file_put_contents($file, $hs);
+    }
 ?>
